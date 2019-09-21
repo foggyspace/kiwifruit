@@ -22,3 +22,30 @@ class ObjectDict(dict):
 paths = ObjectDict()
 
 conf = ObjectDict()
+
+commandline_options = ObjectDict()
+
+
+class Url(object):
+    def __init__(self, url, method, params, referer):
+        self.url = url
+        self.method = method
+        self.params = params
+        self.referer = referer
+
+    @classmethod
+    def from_url(cls, url, referer):
+        url, params = url.split('?', 1) if url.find('?') else (url, '')
+        return cls(url, DEFAULT_METHOD, params, referer)
+
+    @property
+    def name(self):
+        return self.__class__.__name__
+
+    def __str__(self):
+        return f"<{self.name}, {self.url}, {self.method}, {self.params}, {self.referer}>"
+
+    __repr__ = __str__
+
+
+Result = namedtuple("Result", "response details")
