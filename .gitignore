@@ -1,3 +1,6 @@
 *.pyc
 __pycach__/
 .idea/
+Pipfile
+Pipfile.lock
+
