@@ -3,4 +3,5 @@ __pycach__/
 .idea/
 Pipfile
 Pipfile.lock
+db.sqlite3
 
