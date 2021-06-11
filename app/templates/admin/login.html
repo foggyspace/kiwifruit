@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width-device, inital-scale=1" />
+		<title>用户登录</title>
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}" />
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/login.css') }}" />
+	</head>
+	<body class="text-center">
+		<main class="form-signin">
+			<form method="post" action="{{ url_for('auth.login') }}">
+					{{ form.csrf_token }}
+				<img src="{{ url_for('static', filename='images/bg.jpeg') }}" alt="bg" width="72" heigth="57" />
+				<h1 class="h3 mb-3 fw-normal">Kiwifruit | Web应用脆弱性扫描系统</h1>
+				<div class="form-floating">
+					<!--<input type="text" name="username" class="form-control" id="floatingInput" placeholder="请输入用户名." />-->
+					{{ form.username(class='form-control', id='floatingInput', placeholder='请输入密码.') }}
+					<label for="floatingInput">用户名</label>
+				</div>
+
+				<div class="form-floating">
+					<!--<input type="password" name="password" class="form-control" id="floatingInput" placeholder="请输入密码." />-->
+					{{ form.password(class='form-control', id='floatingInput', placeholder='请输入密码.') }}
+					<label for="floatingInput">密码</label>
+				</div>
+
+				<div class="checkbox mb-3">
+					<label>
+						{{ form.remeber(class='form-check-input') }}
+						{{ form.remeber.label }}
+						<!--<input type="checkbox" value="remeber-me" />记住我-->
+					</label>
+				</div>
+				<!--<button class="w-100 btn btn-lg btn-primary" type="submit">登录</button>-->
+				{{ form.submit(class='w-100 btn btn-lg btn-primary') }}
+				<p class="mt-5 mb-3 text-muted">&copy; 2019-2021</p>
+			</form>
+		</main>
+	</body>
+</html>

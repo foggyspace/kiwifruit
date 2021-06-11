@@ -1,14 +1,18 @@
 [[source]]
-name = "pypi"
 url = "https://pypi.org/simple"
 verify_ssl = true
+name = "pypi"
+
+[packages]
+apscheduler = "*"
+flask = "*"
+flask-sqlalchemy = "*"
+pymysql = "*"
+pluginbase = "*"
+flask-wtf = "*"
+flask-login = "*"
 
 [dev-packages]
 
-[packages]
-django = "*"
-gevent = "*"
-requests = "*"
-
 [requires]
-python_version = "3.6"
+python_version = "3.8"
