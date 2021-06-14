@@ -17,7 +17,7 @@
 			</button>
 			<ul class="navbar-nav px-3">
 				<li class="nav-item text-nowrap">
-					<a class="nav-link" href="/login">退出</a>
+					<a class="nav-link" href="{{ url_for('auth.logout', next=request.full_path) }}">退出</a>
 				</li>
 			</ul>
 		</header>
@@ -27,13 +27,13 @@
 					<div class="position-sticky pt-3">
 						<ul class="nav flex-column">
 							<li class="nav-item">
-								<a class="nav-link active" aria-current="page" href="/index">
+								<a class="nav-link active text-white text-decoration-none align-items-center" aria-current="page" href="/index">
 									<span data-feather="home"></span>
 									主页
 								</a>
 							</li>
 							<li class="nav-item">
-								<a class="nav-link active" aria-current="page" href="/tasks">
+								<a class="nav-link text-white text-decoration-none align-items-center" aria-current="page" href="/tasks">
 									<span data-feather="home"></span>
 									扫描任务列表
 								</a>
@@ -42,9 +42,9 @@
 					</div>
 				</nav>
 				<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-					{% for message in get_flashed_message(with_categories=True) %}
-						<div class="alert alert-{{ message[0] }}" role="alert">
-							<button type="button" class="close" data-dismiss="alert">&items;</button>
+					{% for message in get_flashed_messages(with_categories=True) %}
+						<div class="alert alert-{{ message[0] }} alert-dismissible fade show" role="alert">
+							<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
 							{{ message[1] }}
 						</div>
 					{% endfor %}
@@ -53,5 +53,9 @@
 				</main>
 			</div>
 		</div>
+		{% block scripts %}
+			<script type="text/javascript" src="{{ url_for('static', filename='js/jquery-3.2.1.slim.min.js') }}"></script>
+			<script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+		{% endblock scripts %}
 	</body>
 </html>

@@ -7,7 +7,9 @@
 		<h1 class="h2">漏洞扫描任务列表</h1>
 		<div class="btn-toolbar mb-2 mb-md-0">
 			<div class="btn-group me-2">
-				<button type="button" class="btn btn-sm btn-outline-sencondary btn-primary">新增扫描任务</button>
+				<button type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop" class="btn btn-sm btn-outline-sencondary btn-primary">
+					新增扫描任务
+				</button>
 			</div>
 		</div>
 	</div>
@@ -16,9 +18,9 @@
 			<thead>
 				<tr>
 					<th>#</th>
-					<th>#</th>
-					<th>#</th>
-					<th>#</th>
+					<th>任务名称</th>
+					<th>目标站点</th>
+					<th>开始时间</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -30,5 +32,31 @@
 				</tr>
 			</tbody>
 		</table>
+	</div>
+	<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="staticBackdropLabel">添加任务</h5>
+			        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<form>
+						<div class="mb-3">
+							<label for="recipient-name" class="col-form-label">任务名称:</label>
+							<input type="text" class="form-control" id="recipient-name">
+						</div>
+						<div class="mb-3">
+							<label for="message-text" class="col-form-label">目标站点:</label>
+							<input type="text" class="form-control" id="recipient-name">
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
+					<button type="button" class="btn btn-primary">添加</button>
+      </div>
+			    </div>
+		</div>
 	</div>
 {% endblock content %}

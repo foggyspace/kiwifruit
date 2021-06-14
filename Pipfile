@@ -5,12 +5,14 @@ name = "pypi"
 
 [packages]
 apscheduler = "*"
-flask = "*"
 flask-sqlalchemy = "*"
 pymysql = "*"
 pluginbase = "*"
 flask-wtf = "*"
 flask-login = "*"
+flask-script = "*"
+flask-migrate = "*"
+flask = "==1.1.2"
 
 [dev-packages]
 

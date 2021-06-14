@@ -7,7 +7,7 @@ basedir = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 class BaseConfig(object):
     SECRET_KEY = "base config string key"
 
-    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SQLALCHEMY_TRACK_MODIFICATIONS = True
     SQLALCHEMY_RECORD_QUERIES = True
 
 

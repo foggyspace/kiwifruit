@@ -2,26 +2,32 @@
 <html>
 	<head>
 		<meta charset="utf-8" />
-		<meta name="viewport" content="width-device, inital-scale=1" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<title>用户登录</title>
 		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}" />
 		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/login.css') }}" />
 	</head>
 	<body class="text-center">
 		<main class="form-signin">
+					{% for message in get_flashed_messages(with_categories=True) %}
+						<div class="alert alert-{{ message[0] }} alert-dismissible fade show" role="alert">
+							<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+							{{ message[1] }}
+						</div>
+					{% endfor %}
 			<form method="post" action="{{ url_for('auth.login') }}">
 					{{ form.csrf_token }}
-				<img src="{{ url_for('static', filename='images/bg.jpeg') }}" alt="bg" width="72" heigth="57" />
+				<img class="k-logo" src="{{ url_for('static', filename='images/bg.jpeg') }}" alt="bg" width="72" heigth="57" />
 				<h1 class="h3 mb-3 fw-normal">Kiwifruit | Web应用脆弱性扫描系统</h1>
 				<div class="form-floating">
 					<!--<input type="text" name="username" class="form-control" id="floatingInput" placeholder="请输入用户名." />-->
-					{{ form.username(class='form-control', id='floatingInput', placeholder='请输入密码.') }}
+					{{ form.username(class='form-control', id='floatingInput', placeholder='请输入用户名.') }}
 					<label for="floatingInput">用户名</label>
 				</div>
 
 				<div class="form-floating">
 					<!--<input type="password" name="password" class="form-control" id="floatingInput" placeholder="请输入密码." />-->
-					{{ form.password(class='form-control', id='floatingInput', placeholder='请输入密码.') }}
+					{{ form.password(class='form-control', id='floatingPassword', placeholder='请输入密码.') }}
 					<label for="floatingInput">密码</label>
 				</div>
 
@@ -37,5 +43,7 @@
 				<p class="mt-5 mb-3 text-muted">&copy; 2019-2021</p>
 			</form>
 		</main>
+		<script type="text/javascript" src="{{ url_for('static', filename='js/jquery-3.2.1.slim.min.js') }}"></script>
+		<script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
 	</body>
 </html>
