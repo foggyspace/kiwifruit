@@ -7,3 +7,4 @@ db.sqlite3
 _older/
 *.db
 migrations/
+.env
