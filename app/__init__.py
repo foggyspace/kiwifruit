@@ -1,4 +1,5 @@
 from flask import Flask
+from app.models.base import db
 
 
 def register_blueprints(app):
@@ -9,4 +10,5 @@ def register_blueprints(app):
 def create_app():
     app = Flask(__name__)
     register_blueprints(app)
+    db.init_app(app)
     return app

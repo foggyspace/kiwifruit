@@ -1,5 +1,5 @@
 from pytz import utc
-from flask import Blueprint
+from flask import Blueprint, render_template
 from apscheduler.schedulers.background import BackgroundScheduler
 from app.config.settings import executors
 
@@ -25,7 +25,12 @@ def run_scanner():
 @tasks_bp.route('/index')
 @tasks_bp.route('/', methods=['GET'])
 def index():
-    return 'index page'
+    return render_template('index.html')
+
+
+@tasks_bp.route('/list', methods=['GET'])
+def list():
+    return render_template('list.html')
 
 
 @tasks_bp.route('/addJob', methods=['GET', 'POST'])
@@ -33,6 +38,11 @@ def add_job():
     pass
 
 
-@tasks_bp.route('getJob', methods=['GET'])
+@tasks_bp.route('/getJob', methods=['GET'])
 def get_job():
+    pass
+
+
+@tasks_bp.route('/removeJob', methods=['GET'])
+def remove_job():
     pass
