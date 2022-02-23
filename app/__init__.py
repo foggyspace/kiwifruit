@@ -9,6 +9,7 @@ def register_blueprints(app):
 
 def create_app():
     app = Flask(__name__)
+    app.config.from_object('app.config.config')
     register_blueprints(app)
     db.init_app(app)
     return app
