@@ -1,11 +1,11 @@
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer
 from datetime import datetime
+
+from app.extensions import db
 
 
 __all__ = ['db', 'Base']
-
-db = SQLAlchemy()
 
 
 class Base(db.Model):

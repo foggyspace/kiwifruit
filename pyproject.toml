@@ -11,6 +11,7 @@ python-dotenv = "^0.19.2"
 APScheduler = "^3.8.1"
 Flask-SQLAlchemy = "^2.5.1"
 pluginbase = "^1.0.1"
+Flask-APScheduler = "^1.12.3"
 
 [tool.poetry.dev-dependencies]
 
