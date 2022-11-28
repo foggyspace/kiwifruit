@@ -9,6 +9,11 @@ DEFAULT_METHOD = "GET"
 
 TITLE_PATTERN_RE = re.compile(r"<title>(?P<title>[^<]+)</title>", re.I)
 
+PARAMS_PATTERN = re.compile(r"(?P<key>[^&=]+)(?:=(?P<value>[^&=]*))?")
+
+
+SITETYPES = {'PHP':'.php', 'JSP':'.jsp', 'ASP.NET':'.asp', 'ASP':'.asp'}
+
 
 class ObjectDict(dict):
     def __getattr__(self, name: str) -> None:

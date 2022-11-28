@@ -8,10 +8,11 @@ authors = ["seaung <seaung.c0m7de@protonmail.com>"]
 python = "^3.9"
 Flask = "^2.0.2"
 python-dotenv = "^0.19.2"
-APScheduler = "^3.8.1"
 Flask-SQLAlchemy = "^2.5.1"
-pluginbase = "^1.0.1"
-Flask-APScheduler = "^1.12.3"
+requests = "^2.28.1"
+gevent = "^22.10.2"
+mysqlclient = "^2.1.1"
+bs4 = "^0.0.1"
 
 [tool.poetry.dev-dependencies]
 
