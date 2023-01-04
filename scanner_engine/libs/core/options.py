@@ -10,12 +10,12 @@ from optparse import OptionParser
 
 from libs.core.data import cmdOptions ,config ,paths , SITETYPES
 from libs.core.settings import CONNECTION_TIMEOUT, NETWORK_TIMEOUT, TASK_TABLE
-#from libs.core.logs import ERROR, DEBUG, INFO
 from libs.core.tools import mkdir, set_unreachable_flag
 from libs.core.crawler import CrawlEngine
 from libs.core.request import request
 from libs.core.errors import DestinationUnReachable
 from libs.utils import db
+
 
 def get_target(task_id):
     sql = 'SELECT * FROM %s WHERE `ID`=%s' %(TASK_TABLE, task_id)

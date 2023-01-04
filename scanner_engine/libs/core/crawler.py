@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-#-*-encoding:UTF-8-*-
-
 import re
 from urllib.parse import urlparse
 from datetime import datetime
@@ -18,20 +15,14 @@ from libs.utils import db
 
 
 DOMAIN_PAHT = re.compile(r"^(?P<domain>.+//[^/]+)(?P<path>.*)$")
+
 ROBOTS_ALLOW_PATH = re.compile(r"allow\s*:\s*(?P<path>[^*]+).*$",re.I)
+
 SITEMAP_URL = re.compile(r"(?P<url>http[^<>]+)")
 
 
 def unique(value, stripchars):
-    """
-    value,chars sequence like,return unique string
-    >>>unique("111ttt11tt")
-    1t1t
-    >>unique(['\d','\d','s','s'],"\d")
-    \dss
-    """
     _ = []
-    #v = True if stripchars else False
     v = not not stripchars
     for t in value :
         if t not in _[-1:] or (v and t not in stripchars):
@@ -44,8 +35,6 @@ def pipeline(request):
         data = [getattr(request,attr).encode('utf-8') for attr in ('url','method','params','referer')]
 
         sql_c = "SELECT COUNT(1) as `c` FROM %s" % (URL_TABLE)
-        # sql_c += " WHERE `task_id`='%s' and `url`='%s' and `method`='%s' and `params`='%s'"
-        # sql_c = sql_c % (conf.taskid, data[0], data[1], data[2])
         sql_c += " WHERE `task_id`=%s and `url`=%s and `method`=%s and `params`=%s"
         if db.get(sql_c, config.taskid, data[0], data[1], data[2]).c > 0:
             return
@@ -104,8 +93,6 @@ class Request(Url):
 
     @classmethod
     def params_type(cls,value):
-        # _ = [ '\d' if k.isdigit() else '\w' if k.isalpha() else k for k in value ]
-        # return unique(_,'\d\w')
         _ = ['\d' if k.isdigit() else k for k in value ]
         return unique(_,'\d')
 
@@ -129,20 +116,17 @@ class Spider(object):
         response = self.request_url(request)
         if response:
             self.parse(response,request)
-        ## request update end_time
         self.task.update_url_end_time(request)
 
     @classmethod
     def start(cls,request,schedule):
         try:
             spider = cls(request,schedule)
-            #DEBUG(current_name() + ' start')
             spider.run(request)
 
         except Exception:
             ERROR('Spider.start Exception')
         finally:
-            #DEBUG(current_name() + ' end')
             pass
 
     def request_url(self,request):
