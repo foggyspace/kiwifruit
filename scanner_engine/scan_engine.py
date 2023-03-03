@@ -1,14 +1,14 @@
-import os
 import sys
 
-from libs.core.initenv import envinit
+from lib.core.envinit import envinit
 envinit(__file__)
 
-from libs.core.logs import ERROR,INFO,WARN
-from libs.core.options import parseCmdline,init
-from libs.core.errors import ScannerTopException,DestinationUnReachable
-from libs.core.engine import run
-from libs.core.tools import task_finsh_clean
+from lib.core.logs import ERROR,INFO,WARN
+from lib.core.options import parseCmdline,init
+from lib.core.errors import ScannerTopException,DestinationUnReachable
+from lib.core.engine import run
+from lib.core.common import task_finsh_clean
+
 
 def main():
     try:

@@ -1,36 +1,44 @@
 import os
-from os.path import isdir
 import shutil
+
 from urllib.parse import urlsplit, urlunsplit, urljoin as _urljoin
+
+
 from posixpath import normpath
 from datetime import datetime
 
+from lib.core.logs import ERROR
+from lib.core.data import paths, conf
+from lib.core.settings import IGNORE_DEFAULT_FILE_SUFFIX
+from lib.db import db
 
-from libs.core.logs import ERROR
-from libs.core.data import paths, config
-from libs.core.settings import IGNORE_DEFAULT_FILE_SUFFIX
-from libs.utils import db
 
-
-def urljoin(base: str, url: str, allow_fragments: bool = True) -> str:
-    _ = _urljoin(base, url, allow_fragments)
+def urljoin(base, url, allow_fragments=True):
+    _ = _urljoin(base, url, allow_fragments=True)
     p = urlsplit(_)
-    path = p.path + "/" if p.path.endswith("/") else p.path
-    return urlunsplit((p.scheme, p.netloc, normpath(path), p.query, p.fragment))
+    path = p.path + '/' if p.path.endswith('/') else p.path
+    return urlunsplit((p.scheme,p.netloc,normpath(p.path),p.query,p.fragment, path))
 
 
-def show_paths():
+def banner():
+    pass
+
+
+def showpaths():
+    """
+    print paths for convenient debugging
+    """
     print(paths)
 
 
-def mkdir(path: str, remove: bool = True):
-    if isdir(path):
+def mkdir(path,remove=True):
+    if os.path.isdir(path):
         if remove:
             try:
                 shutil.rmtree(path)
                 os.mkdir(path)
             except Exception:
-                ERROR("rmtree except, path : " + path)
+                ERROR("rmtree except,path"+path)
     else:
         os.mkdir(path)
 
@@ -65,7 +73,8 @@ def update_end_time(task_id):
 
 def task_finsh_clean(task_id=None):
     if task_id is None:
-        task_id = config.taskid
+        task_id = conf.taskid
 
     update_task_status(task_id)
     update_end_time(task_id)
+

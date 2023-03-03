@@ -3,8 +3,8 @@ from typing import Any
 import requests
 from requests.utils import get_encodings_from_content
 
-from libs.core.logs import ERROR
-from libs.core.data import config, DEFAULT_METHOD
+from lib.core.logs import ERROR
+from lib.core.data import conf as config, DEFAULT_METHOD
 
 
 HEADERS = {
@@ -61,3 +61,4 @@ def request_url(request: Any, payload: Any = None, **kwargs: Any):
     else:
         kwargs.setdefault('data', p)
     return request(request.url, **kwargs)
+ 

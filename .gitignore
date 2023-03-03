@@ -8,3 +8,4 @@ _older/
 *.db
 migrations/
 .env
+*.log

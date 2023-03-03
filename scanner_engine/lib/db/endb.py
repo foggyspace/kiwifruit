@@ -180,13 +180,23 @@ if MySQLdb is not None:
     FLAG = MySQLdb.constants.FLAG
     CONVERSIONS = copy.copy(MySQLdb.converters.conversions)
 
+    #print(CONVERSIONS, type(CONVERSIONS))
+    #print("00000000000")
+
     field_types = [FIELD_TYPE.BLOB, FIELD_TYPE.STRING, FIELD_TYPE.VAR_STRING]
     if 'VARCHAR' in vars(FIELD_TYPE):
         field_types.append(FIELD_TYPE.VARCHAR)
 
     for field_type in field_types:
-        CONVERSIONS[field_type] = [(FLAG.BINARY, str)] + CONVERSIONS[field_type]
+        #print("--+++++----")
+        #print(type(field_type), field_type)
+        #print("------")
+        #print(type(CONVERSIONS[field_type]), CONVERSIONS[field_type])
+        CONVERSIONS[field_type] = [(FLAG.BINARY, str)] + [CONVERSIONS[field_type]]
+
+    print("====", CONVERSIONS, "++++++")
 
     # Alias some common MySQL exceptions
     IntegrityError = MySQLdb.IntegrityError
     OperationalError = MySQLdb.OperationalError
+

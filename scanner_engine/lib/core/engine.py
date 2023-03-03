@@ -1,19 +1,20 @@
 import os
 import sys
 
-from libs.core.crawler import CrawlEngine
-from libs.core.logs import ERROR, DEBUG, INFO
-from libs.core.data import config, paths, Url, ObjectDict
-from libs.core.settings import SCRIPTS_NAME, RULE_TABLE, RUN_URL_DEFAULT_FUN, RUN_DOMAIN_DEFAULT_FUN ,\
+from lib.core.crawler import CrawlEngine
+from lib.core.logs import ERROR, DEBUG
+from lib.core.data import conf as config, Url, ObjectDict
+from lib.core.settings import PLUGIN_RULES, RULE_TABLE, RUN_URL_DEFAULT_FUN, RUN_DOMAIN_DEFAULT_FUN ,\
                            URL_TABLE, RESULT_TABLE
-from libs.utils import db
+from lib.db import db
+
 import gevent
-from gevent import pool, queue, spawn, joinall
+from gevent import pool, spawn, joinall
 
 
 def attr_from_script(scriptname, attr):
     try:
-        path = "%s.%s" %(SCRIPTS_NAME, scriptname)
+        path = "%s.%s" %(PLUGIN_RULES, scriptname)
         __import__(path)
         module = sys.modules[path]
         try:
@@ -166,3 +167,4 @@ class ScanEngine(object):
 def run():
     engine = ScanEngine()
     engine.run()
+
