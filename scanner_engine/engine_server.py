@@ -1,6 +1,6 @@
 from typing import Any
 
-from email import message_from_bytes
+from email import message_from_file
 
 from gevent.server import StreamServer
 from gevent.subprocess import Popen, call
@@ -40,6 +40,9 @@ class EngineServer:
         try:
             r = sockfd.makefile("rb", self.read_buffer_size)
             w = sockfd.makefile("wb", self.write_buffer_size)
+            headers = message_from_file(r)
+
+            INFO(f"connection from : {address} - headers : {headers}")
         except Exception:
             ERROR("tcp handler exception, please check.")
 
@@ -69,7 +72,6 @@ class ScannerPlugin(Plugin):
     def cancel_scan(self):
         """关闭扫描器"""
         pass
-
 
 
 def main():

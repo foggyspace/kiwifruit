@@ -6,6 +6,7 @@ db = SQLAlchemy()
 
 class Task(db.Model):
     __tablename__ = "task"
+    id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(200))
     status = db.Column(db.Integer)
     start_url = db.Column(db.String(255))
@@ -23,6 +24,7 @@ class Task(db.Model):
 class Url(db.Model):
     __tablename__ = "url"
 
+    id = db.Column(db.Integer, primary_key=True)
     task_id = db.Column(db.Integer)
     url = db.Column(db.String(255))
     method = db.Column(db.String(5))
@@ -35,6 +37,7 @@ class Url(db.Model):
 class Result(db.Model):
     __tablename__ = "result"
 
+    id = db.Column(db.Integer, primary_key=True)
     task_id = db.Column(db.Integer)
     rule_id = db.Column(db.Integer)
     risk = db.Column(db.Integer, default=1) # 1 low 2 middle 3 high
@@ -47,10 +50,11 @@ class Result(db.Model):
 class Rule(db.Model):
     __tablename__ = "rule"
 
+    id = db.Column(db.Integer, primary_key=True)
     rule_id = db.Column(db.Integer)
     rule_name = db.Column(db.String(128))
     run_type = db.Column(db.Integer, default=1)
-    risk = db.Column(db.String)
+    risk = db.Column(db.String(4))
     priority = db.Column(db.Integer, default=1)
     file_name = db.Column(db.String(128))
     category_id = db.Column(db.Integer)

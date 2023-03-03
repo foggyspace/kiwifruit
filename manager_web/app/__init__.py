@@ -5,7 +5,7 @@ from flask_admin import Admin
 
 def create_app():
     app = Flask(__name__)
-
+    app.config.from_object("app.config")
     app.config["FLASK_ADMIN_SWATCH"] = "cerulean"
 
     register_bluerpint_views(app)
@@ -27,4 +27,10 @@ def register_flask_admin(app: Flask):
 
 def register_flask_plugin(app: Flask):
     """注册flask插件"""
+    from app.models import db
+
+    db.init_app(app)
+
+    with app.app_context():
+        db.create_all()
 

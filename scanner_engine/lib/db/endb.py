@@ -194,7 +194,7 @@ if MySQLdb is not None:
         #print(type(CONVERSIONS[field_type]), CONVERSIONS[field_type])
         CONVERSIONS[field_type] = [(FLAG.BINARY, str)] + [CONVERSIONS[field_type]]
 
-    print("====", CONVERSIONS, "++++++")
+    #print("====", CONVERSIONS, "++++++")
 
     # Alias some common MySQL exceptions
     IntegrityError = MySQLdb.IntegrityError

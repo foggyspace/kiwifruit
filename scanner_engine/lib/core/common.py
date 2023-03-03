@@ -7,7 +7,7 @@ from urllib.parse import urlsplit, urlunsplit, urljoin as _urljoin
 from posixpath import normpath
 from datetime import datetime
 
-from lib.core.logs import ERROR
+from lib.core.logs import DEBUG, ERROR
 from lib.core.data import paths, conf
 from lib.core.settings import IGNORE_DEFAULT_FILE_SUFFIX
 from lib.db import db
@@ -50,21 +50,27 @@ def discard(url):
 
 
 def set_unreachable_flag(task_id):
-    sql = "UPDATE task SET `reachable`=0 WHERE id=%s" % task_id
+    #sql = "UPDATE task SET `reachable`=0 WHERE id=%s" % task_id
+    sql = f"UPDATE task SET `reachable`=0 WHERE id={task_id}"
+    DEBUG(sql)
     try:
         db.execute(sql)
     except Exception:
         ERROR('set_unreachable failed,task_id:%s,please check' % task_id)
 
 def update_task_status(task_id):
-    sql = "UPDATE task SET `status`=3 WHERE id=%s" % task_id
+    #sql = "UPDATE task SET `status`=3 WHERE id=%s" % task_id
+    sql = f"UPDATE task SET `status`=3 WHERE id={task_id}"
+    DEBUG(sql)
     try:
         db.execute(sql)
     except Exception:
         ERROR('update_task_status failed,task_id:%s,please check' % task_id)
 
 def update_end_time(task_id):
-    sql = "UPDATE task SET `end_time`=%s WHERE id=%s"
+    #sql = "UPDATE task SET `end_time`=%s WHERE id=%s"
+    sql = f"UPDATE task SET `end_time`={datetime.now()} WHERE id={task_id}"
+    DEBUG(sql)
     try: 
         db.execute(sql, datetime.now(), task_id)
     except Exception:
