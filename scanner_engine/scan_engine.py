@@ -28,7 +28,7 @@ def main():
         INFO("Scan finished!")
 
 def test():
-    sys.argv = ['python','topscan.py','-t','1','-u','http://127.0.0.1/vul/file_upload.php','-b','/vul/']
+    sys.argv = ['python3','scan_engine.py','-t','1','-u','http://127.0.0.1/pikachu/vulnerability/file_upload.html','-b','/vul/']
     main()
 
 
