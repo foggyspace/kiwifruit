@@ -7,6 +7,7 @@ def create_app():
     app = Flask(__name__)
     app.config.from_object("app.config")
     app.config["FLASK_ADMIN_SWATCH"] = "cerulean"
+    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
 
     register_bluerpint_views(app)
     register_flask_plugin(app)
@@ -17,6 +18,8 @@ def create_app():
 
 def register_bluerpint_views(app: Flask):
     """注册Flask蓝图对象"""
+    from app.views import vuln_bp
+    app.register_blueprint(vuln_bp)
 
 
 def register_flask_admin(app: Flask):
