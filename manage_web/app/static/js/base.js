@@ -349,18 +349,13 @@ function createTask(){
     var task_starturl = $("#task_starturl").val();
     var task_base = $("#task_base").val();
     var task_urlcount = $("#task_urlcount").val();
+		console.log(task_name);
 
     var task_id = $("#hidden_id").val();
     if(task_id == 0){
         //new
-        $.post("/task",
-            {
-                'action': 'create',
-                'task_name': task_name,
-                'task_starturl': task_starturl,
-                'task_base': task_base,
-                'task_urlcount': task_urlcount 
-            },
+        $.post("/add",
+            {'action': 'create','task_name': task_name,'task_starturl': task_starturl,'task_base': task_base,'task_urlcount': task_urlcount},
             function(data){
                 $('tbody .showcounter').each(function(){
                     $(this).html(parseInt($(this).html())+1);
@@ -368,7 +363,8 @@ function createTask(){
                 $('tbody').prepend(data);
                 task_bind_all();
                 $('#createScan').modal('hide');
-            }
+            },
+						'json'
         );
 
     }else{
