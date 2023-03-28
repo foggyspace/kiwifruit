@@ -1,3 +1,5 @@
+from datetime import datetime
+from sqlalchemy import func
 from flask_sqlalchemy import SQLAlchemy
 
 
@@ -17,8 +19,8 @@ class Task(db.Model):
     robots_parsed = db.Column(db.Boolean, default=False)
     sitemap_parsed = db.Column(db.Boolean, default=False)
     reachable = db.Column(db.Boolean, default=True)
-    start_time = db.Column(db.DateTime)
-    end_time = db.Column(db.DateTime)
+    start_time = db.Column(db.DateTime, default=datetime.now())
+    end_time = db.Column(db.DateTime, default=datetime.now(), onupdate=func.now())
    
 
 class Url(db.Model):
@@ -30,8 +32,8 @@ class Url(db.Model):
     method = db.Column(db.String(5))
     params = db.Column(db.String(200))
     referer = db.Column(db.String(200))
-    start_time = db.Column(db.DateTime)
-    end_time = db.Column(db.DateTime)
+    start_time = db.Column(db.DateTime, default=datetime.now())
+    end_time = db.Column(db.DateTime, default=datetime.now())
 
 
 class Result(db.Model):
