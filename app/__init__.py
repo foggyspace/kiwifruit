@@ -7,7 +7,7 @@ def celery_init_app(app: Flask) -> Celery:
         def __call__(self, *args: object, **kwargs: object) -> object:
             with app.app_context():
                 return self.run(*args, **kwargs)
-    celery_app = Celery(app.name, task_cls=FlaskTask, broker='redis://localhost:6379/0')
+    celery_app = Celery(app.name, task_cls=FlaskTask, broker='redis://localhost:6379/0', include=['app.tasks.tasks'])
     #celery_app.config_from_object(app.config['CELERY'])
     celery_app.set_default()
     app.extensions['celery'] = celery_app
