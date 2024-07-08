@@ -7,6 +7,9 @@ click-didyoumean==0.3.1
 click-plugins==1.1.1
 click-repl==0.3.0
 Flask==3.0.3
+Flask-SQLAlchemy==3.1.1
+gevent==24.2.1
+greenlet==3.0.3
 itsdangerous==2.2.0
 Jinja2==3.1.4
 kombu==5.3.7
@@ -15,7 +18,11 @@ prompt_toolkit==3.0.47
 python-dateutil==2.9.0.post0
 redis==5.0.7
 six==1.16.0
+SQLAlchemy==2.0.31
+typing_extensions==4.12.2
 tzdata==2024.1
 vine==5.1.0
 wcwidth==0.2.13
 Werkzeug==3.0.3
+zope.event==5.0
+zope.interface==6.4.post2
