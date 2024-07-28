@@ -3,6 +3,7 @@ import { RouteObject } from "./interface";
 
 import Login from "../views/login/";
 import LayoutIndex from "../layouts";
+import lazyLoad from "./utils/lazyLoad";
 
 
 export const rootRouter: RouteObject[] = [
@@ -32,6 +33,24 @@ export const rootRouter: RouteObject[] = [
     {
         path: "*",
         element: <Navigate to="/404" />
+    },
+    {
+        path: "/403",
+        element: lazyLoad(React.lazy(() => import("@/components/ErrorMessage/403"))),
+        meta: {
+            requestsAuth: false,
+            title: "403页面",
+            key: "500"
+        }
+    },
+    {
+        path: "/500",
+        element: lazyLoad(React.lazy(() => import("@/components/ErrorMessage/500"))),
+        meta: {
+            requestsAuth: false,
+            title: "500页面",
+            key: "500"
+        }
     }
 ];
 
