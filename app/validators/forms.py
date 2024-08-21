@@ -1,8 +1,10 @@
 from flask import request
-from wtforms import Form as WTForms, ValidationError, validators
+from wtforms import Form as WTForms
 
 from wtforms.validators import DataRequired, EqualTo, Regexp
 from wtforms import PasswordField, StringField
+
+from app.libs.errors import ParameterError
 
 
 class Form(WTForms):
@@ -14,7 +16,7 @@ class Form(WTForms):
     def validate_for_api(self):
         valid = super(Form, self).validate()
         if not valid:
-            raise ValidationError
+            raise ParameterError(msg=self.errors)
         return self
 
 
@@ -31,6 +33,5 @@ class ChangePasswordForm(Form):
         ])
     confirm_password = PasswordField('确认密码', validators=[DataRequired(message='请确认密码')])
     old_password = PasswordField('原密码', validators=[DataRequired(message='请输入原密码')])
-
 
 
