@@ -1,18 +1,23 @@
 from contextlib import contextmanager
 from datetime import datetime
 
-from flask_sqlalchemy import SQLAlchemy as _SQLAlchemy, BaseQuery
-from sqlalchemy import Integer, Column, SmallInteger, orm
+from flask_sqlalchemy import SQLAlchemy as _SQLAlchemy
+from sqlalchemy import Integer, Column, SmallInteger, select
+from sqlalchemy.orm import Query as BaseQuery
 
 
 class SQLAlchemy(_SQLAlchemy):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.Query = Query
+
     @contextmanager
     def auto_commit(self):
         try:
             yield
             self.session.commit()
         except Exception as e:
-            db.session.rollback()
+            self.session.rollback()
             raise e
 
 
@@ -20,7 +25,8 @@ class Query(BaseQuery):
     def filter_by(self, **kwargs):
         if 'status' not in kwargs.keys():
             kwargs['status'] = 1
-        return super(Query, self).filter_by(**kwargs)
+        stmt = select(self._entity_from_pre_ent()).filter_by(**kwargs)
+        return self.session.execute(stmt).scalars()
 
 
 db = SQLAlchemy()

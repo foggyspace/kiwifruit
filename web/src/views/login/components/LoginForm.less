@@ -1,0 +1,50 @@
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    // background: linear-gradient(135deg, #1890ff 0%, #722ed1 100%);
+
+    .login-form {
+        width: 100%;
+        max-width: 400px;
+        padding: 30px;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.95);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+
+        @media screen and (max-width: 576px) {
+            margin: 20px;
+            padding: 20px;
+        }
+
+        .login-title {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #1890ff;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .ant-form-item {
+            margin-bottom: 24px;
+        }
+
+        .ant-input-affix-wrapper {
+            border-radius: 4px;
+
+            .anticon {
+                color: rgba(0, 0, 0, 0.45);
+            }
+        }
+
+        .login-form-button {
+            height: 40px;
+            font-size: 16px;
+            border-radius: 4px;
+        }
+
+        .ant-checkbox-wrapper {
+            color: rgba(0, 0, 0, 0.65);
+        }
+    }
+}

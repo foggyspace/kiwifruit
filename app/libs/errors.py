@@ -1,86 +1,80 @@
-from typing import Any
+from typing import Any, Optional
 from flask import request, json
-from flask.ctx import AppContext
 from werkzeug.exceptions import HTTPException
+from app.libs.error_codes import ErrorCode
 
 
 class APIException(HTTPException):
-    code: Any = 500
-    msg: str = 'server inernal error'
+    code: int = 500
+    msg: str = 'server internal error'
     error_code: int = 10010
 
-    def __init__(self, msg: str | None = None, code:  None = None, error_code: int = 10086, headers: Any = None) -> None:
+    def __init__(self, error_code: ErrorCode = None, msg: Optional[str] = None, code: Optional[int] = None, headers: Any = None, lang: str = 'zh') -> None:
+        if error_code:
+            self.code = error_code.http_code
+            self.error_code = error_code.error_code
+            self.msg = error_code.zh_msg if lang == 'zh' else error_code.en_msg
         if code:
             self.code = code
-        if error_code:
-            self.error_code = error_code
         if msg:
             self.msg = msg
         super(APIException, self).__init__(msg, None)
 
     def get_body(self, environ: Any = None) -> str:
         body = dict(
-                msg=self.msg,
-                error_code=self.error_code,
-                request=request.method + ' ' + self.get_url_no_paramter()
-            )
+            msg=self.msg,
+            error_code=self.error_code,
+            request=request.method + ' ' + self.get_url_no_parameter()
+        )
         text = json.dumps(body)
         return text
 
-    def get_headers(self, environ:Any = None) -> list[tuple[str, str]]:
+    def get_headers(self, environ: Any = None) -> list[tuple[str, str]]:
         return [('Content-Type', 'application/json')]
 
     @staticmethod
-    def get_url_no_paramter():
+    def get_url_no_parameter() -> str:
         full_path = str(request.full_path)
         root_path = full_path.split('?')
         return root_path[0]
 
 
 class Success(APIException):
-    code = 200
-    msg = 'success'
-    error_code = 0
+    def __init__(self, msg: Optional[str] = None, headers: Any = None, lang: str = 'zh') -> None:
+        super().__init__(error_code=ErrorCode.SUCCESS, msg=msg, headers=headers, lang=lang)
 
 
 class Failed(APIException):
-    code = 400
-    msg = 'failed'
-    error_code = 1
+    def __init__(self, msg: Optional[str] = None, headers: Any = None, lang: str = 'zh') -> None:
+        super().__init__(error_code=ErrorCode.FAILED, msg=msg, headers=headers, lang=lang)
 
 
 class AuthFailed(APIException):
-    code = 401
-    msg = 'auth failed'
-    error_code = 2
+    def __init__(self, msg: Optional[str] = None, headers: Any = None, lang: str = 'zh') -> None:
+        super().__init__(error_code=ErrorCode.AUTH_FAILED, msg=msg, headers=headers, lang=lang)
 
 
 class Forbidden(APIException):
-    code = 401
-    msg = 'forbidden'
-    error_code = 3
+    def __init__(self, msg: Optional[str] = None, headers: Any = None, lang: str = 'zh') -> None:
+        super().__init__(error_code=ErrorCode.FORBIDDEN, msg=msg, headers=headers, lang=lang)
 
 
 class NotFound(APIException):
-    code = 404
-    msg = 'not found'
-    error_code = 4
+    def __init__(self, msg: Optional[str] = None, headers: Any = None, lang: str = 'zh') -> None:
+        super().__init__(error_code=ErrorCode.NOT_FOUND, msg=msg, headers=headers, lang=lang)
 
 
 class ParameterError(APIException):
-    code = 400
-    msg = 'paramter error'
-    error_code = 5
+    def __init__(self, msg: Optional[str] = None, headers: Any = None, lang: str = 'zh') -> None:
+        super().__init__(error_code=ErrorCode.PARAMETER_ERROR, msg=msg, headers=headers, lang=lang)
 
 
 class InvalidTokenError(APIException):
-    code = 401
-    msg = 'invalid token error'
-    error_code = 6
+    def __init__(self, msg: Optional[str] = None, headers: Any = None, lang: str = 'zh') -> None:
+        super().__init__(error_code=ErrorCode.INVALID_TOKEN, msg=msg, headers=headers, lang=lang)
 
 
 class ExpiredTokenError(APIException):
-    code = 422
-    msg = 'expirerd token error'
-    error_code = 7
+    def __init__(self, msg: Optional[str] = None, headers: Any = None, lang: str = 'zh') -> None:
+        super().__init__(error_code=ErrorCode.EXPIRED_TOKEN, msg=msg, headers=headers, lang=lang)
 
