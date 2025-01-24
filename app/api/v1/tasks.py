@@ -5,8 +5,9 @@ from app.scanner.engine import ScanEngine
 from app.libs.error_codes import Success
 from app.validators.forms import TaskCreateForm
 from app.libs.enums import TaskStatus
+from app.libs.apiprint import ApiPrint
 
-tasks = Blueprint('tasks', __name__)
+tasks = ApiPrint('tasks')
 
 @tasks.route('/tasks', methods=['POST'])
 def create_task():

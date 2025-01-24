@@ -1,0 +1,94 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: kiwifruit-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: kiwifruit123
+      MYSQL_DATABASE: kiwifruit
+      MYSQL_USER: kiwifruit
+      MYSQL_PASSWORD: kiwifruit123
+    volumes:
+      - mysql_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7.0
+    container_name: kiwifruit-redis
+    restart: always
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: kiwifruit-backend
+    restart: always
+    environment:
+      - FLASK_APP=app.app:create_app
+      - FLASK_ENV=production
+      - MYSQL_HOST=mysql
+      - MYSQL_PORT=3306
+      - MYSQL_USER=kiwifruit
+      - MYSQL_PASSWORD=kiwifruit123
+      - MYSQL_DATABASE=kiwifruit
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    ports:
+      - "5000:5000"
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  celery_worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: kiwifruit-celery
+    restart: always
+    command: celery -A make_celery worker --loglevel=info
+    environment:
+      - MYSQL_HOST=mysql
+      - MYSQL_PORT=3306
+      - MYSQL_USER=kiwifruit
+      - MYSQL_PASSWORD=kiwifruit123
+      - MYSQL_DATABASE=kiwifruit
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    depends_on:
+      - backend
+      - redis
+      - mysql
+
+  frontend:
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+    container_name: kiwifruit-frontend
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+volumes:
+  mysql_data:
+  redis_data:

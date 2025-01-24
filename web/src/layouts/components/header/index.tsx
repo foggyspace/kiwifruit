@@ -33,7 +33,8 @@ const LayoutHeader = () => {
         {
             key: "profile",
             icon: <UserOutlined />,
-            label: "个人信息"
+            label: "个人信息",
+            onClick: () => navigate("/home/profile")
         },
         {
             key: "logout",
