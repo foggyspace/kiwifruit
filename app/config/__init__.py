@@ -1,0 +1,1 @@
+from app.config.config import BaseConfig, Developments, Productions, TestConfig, configs

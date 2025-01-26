@@ -41,7 +41,7 @@ services:
     container_name: kiwifruit-backend
     restart: always
     environment:
-      - FLASK_APP=app.app:create_app
+      - FLASK_APP=app:create_app
       - FLASK_ENV=production
       - MYSQL_HOST=mysql
       - MYSQL_PORT=3306
@@ -61,10 +61,9 @@ services:
   celery_worker:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.celery
     container_name: kiwifruit-celery
     restart: always
-    command: celery -A make_celery worker --loglevel=info
     environment:
       - MYSQL_HOST=mysql
       - MYSQL_PORT=3306
@@ -74,9 +73,12 @@ services:
       - REDIS_HOST=redis
       - REDIS_PORT=6379
     depends_on:
-      - backend
-      - redis
-      - mysql
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      backend:
+        condition: service_started
 
   frontend:
     build:

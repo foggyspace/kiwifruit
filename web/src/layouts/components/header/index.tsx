@@ -44,7 +44,16 @@ const LayoutHeader = () => {
     ];
 
     return (
-        <Header className="layout-header" style={{ display: 'flex', alignItems: 'center' }}>
+        <Header 
+            className="layout-header" 
+            style={{ 
+                    display: 'flex', 
+                    alignItems: 'center',
+                    position: 'fixed',
+                    top: 0,
+                    zIndex: 1,
+                    width: '100%'
+                }}>
             <div className="demo-logo" />
             <Menu
                 theme="dark"

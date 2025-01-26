@@ -63,3 +63,6 @@ def revoke_token(jti):
 def __check_is_active(current_user):
     if not current_user or not current_user.get('is_active'):
         raise AuthFailed(msg='user is not active')
+
+# 为了向后兼容，添加generate_token作为generate_access_token的别名
+generate_token = generate_access_token

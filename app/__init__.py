@@ -44,12 +44,12 @@ def create_app() -> Flask:
     # 根据环境变量加载不同的配置
     env = app.config.get('ENV', 'development')
     if env == 'production':
-        app.config.from_object('app.config.ProductionConfig')
+        app.config.from_object('app.config.Production')
     else:
-        app.config.from_object('app.config.DevelopmentConfig')
+        app.config.from_object('app.config.Developments')
     
     celery_init_app(app)
-    register_plugins(app)
+    # register_plugins(app)
     register_blueprints(app)
     return app
 

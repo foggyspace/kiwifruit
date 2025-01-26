@@ -9,16 +9,18 @@ from app.models.results import ResultModel
 
 
 class ScanEgine(object):
-    def __init__(self, task_id: int) -> None:
+    def __init__(self, task_id: int, start_url: str) -> None:
         self.pool: pool.Pool = pool.Pool(10)
         self.task_id = task_id
         self.host = ''
         self.plugin_manager = PluginManager()
         self.scanned_urls: Set[str] = set()
         self.url_queue = queue.Queue()
+        self.crawler = CrawlerSpider(start_url, task_id)
 
     def start(self) -> None:
         joinall([
+            spawn(self.crawler.crawl),
             spawn(self.schedulerURL)
         ])
 
@@ -61,23 +63,25 @@ class ScanEgine(object):
 
     def schedulerURL(self) -> None:
         """调度URL扫描任务"""
-        # 从数据库获取待扫描的URL
-        urls = URLModel.query.filter_by(task_id=self.task_id).all()
-        
-        for url_obj in urls:
-            if url_obj.url not in self.scanned_urls:
-                self.url_queue.put(url_obj.url)
-
-        while not self.url_queue.empty():
-            url = self.url_queue.get()
-            self.pool.spawn(self._scan_url, url)
+        while True:
+            try:
+                # 从爬虫队列中获取URL
+                url = self.url_queue.get(timeout=1)  # 设置1秒超时
+                if url and url not in self.scanned_urls:
+                    self.pool.spawn(self._scan_url, url)
+            except queue.Empty:
+                # 队列为空时等待
+                gevent.sleep(1)
+            except Exception as e:
+                print(f"Error in URL scheduler: {str(e)}")
+                gevent.sleep(1)
 
     def schedulerDomain(self) -> None:
         """域名扫描调度器，待实现"""
         pass
 
 
-def run(task_id: int) -> None:
-    engine = ScanEgine(task_id)
+def run(task_id: int, start_url: str) -> None:
+    engine = ScanEgine(task_id, start_url)
     engine.start()
 
