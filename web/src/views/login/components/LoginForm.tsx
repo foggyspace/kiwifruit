@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Button, Form, Input, message, Checkbox } from "antd";
 import { useNavigate } from "react-router-dom";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
+import { useDispatch } from "react-redux";
+import { setUserInfo } from "../../../store/modules/users";
 import "./LoginForm.less";
 
 interface LoginFormState {
@@ -14,19 +16,41 @@ const LoginFormComponent = () => {
     const [loading, setLoading] = useState<boolean>(false);
     const navigate = useNavigate();
 
+    const dispatch = useDispatch();
+
     const onFinish = async (values: LoginFormState) => {
         try {
             setLoading(true);
-            // TODO: 这里需要调用登录API
-            if (values.remember) {
-                localStorage.setItem('username', values.username);
-            } else {
-                localStorage.removeItem('username');
+            const response = await fetch('/api/v1/users/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    username: values.username,
+                    password: values.password
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error('登录失败');
             }
-            message.success("登录成功！");
-            navigate("/home");
+
+            const data = await response.json();
+            if (data.code === 0) {
+                dispatch(setUserInfo(data.data));
+                if (values.remember) {
+                    localStorage.setItem('username', values.username);
+                } else {
+                    localStorage.removeItem('username');
+                }
+                message.success("登录成功！");
+                navigate("/home");
+            } else {
+                throw new Error(data.msg || '登录失败');
+            }
         } catch (error) {
-            message.error("登录失败，请检查用户名和密码！");
+            message.error(error instanceof Error ? error.message : "登录失败，请检查用户名和密码！");
         } finally {
             setLoading(false);
         }
