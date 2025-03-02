@@ -50,10 +50,15 @@ class User(BaseModel):
         return self.can(Permissions.AUDIT)
 
     @staticmethod
-    def verify(email: str, password: str) -> dict:
-        user = User.query.filter_by(email=email).first_or_404()
+    def verify(username: str, password: str) -> dict:
+        # 支持用户名或邮箱登录
+        user = User.query.filter(
+            (User.email == username) | (User.nickname == username)
+        ).first()
+        if not user:
+            return None
         if not user.check_password(password):
-            raise Exception()
+            return None
         return {
             'uuid': user.id,
             'permission': user.role,

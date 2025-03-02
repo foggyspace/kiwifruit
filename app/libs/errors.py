@@ -20,7 +20,7 @@ class APIException(HTTPException):
             self.msg = msg
         super(APIException, self).__init__(msg, None)
 
-    def get_body(self, environ: Any = None) -> str:
+    def get_body(self, environ: Any = None, scope: Any = None) -> str:
         body = dict(
             msg=self.msg,
             error_code=self.error_code,
@@ -29,7 +29,7 @@ class APIException(HTTPException):
         text = json.dumps(body)
         return text
 
-    def get_headers(self, environ: Any = None) -> list[tuple[str, str]]:
+    def get_headers(self, environ: Any = None, scope: Any = None) -> list[tuple[str, str]]:
         return [('Content-Type', 'application/json')]
 
     @staticmethod
@@ -40,8 +40,20 @@ class APIException(HTTPException):
 
 
 class Success(APIException):
-    def __init__(self, msg: Optional[str] = None, headers: Any = None, lang: str = 'zh') -> None:
+    def __init__(self, msg: Optional[str] = None, data: Any = None, headers: Any = None, lang: str = 'zh') -> None:
         super().__init__(error_code=ErrorCode.SUCCESS, msg=msg, headers=headers, lang=lang)
+        self.data = data
+
+    def get_body(self, environ: Any = None, scope: Any = None) -> str:
+        body = dict(
+            msg=self.msg,
+            error_code=self.error_code,
+            request=request.method + ' ' + self.get_url_no_parameter()
+        )
+        if self.data is not None:
+            body['data'] = self.data
+        text = json.dumps(body)
+        return text
 
 
 class Failed(APIException):

@@ -4,7 +4,7 @@ from app.models.base import BaseModel
 
 class Task(BaseModel):
     __tablename__ = "tasks"
-    id = Column("id", primary_key=True)
+    id = Column("id", Integer, primary_key=True)
     task_id = Column("task_id", String(255))
     name = Column("name", String(128))
     status = Column("status", Integer)

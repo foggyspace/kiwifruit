@@ -10,8 +10,15 @@ api = ApiPrint('users')
 @api.route('/login', methods=['POST'])
 def user_login():
     form = LoginForm().validate_for_api()
-    user = User.verify(email=form.username.data, password=form.password.data)
+    user = User.verify(username=form.username.data, password=form.password.data)
+    if not user:
+        return jsonify({
+            'code': 401,
+            'msg': '用户名或密码错误',
+            'error_code': 10401
+        })
     token = generate_token(user['uuid'])
+    print(token)
     return Success(data={'token': token, **user})
 
 @api.route('/register', methods=['POST'])

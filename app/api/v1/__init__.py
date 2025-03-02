@@ -8,6 +8,6 @@ def create_blueprint_v1() -> Blueprint:
     '''
     bp_v1 = Blueprint('v1', __name__)
 
-    users.api.register(bp_v1)
+    users.api.register(bp_v1, url_prefix='/users')
     return bp_v1
 

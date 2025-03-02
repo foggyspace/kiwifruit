@@ -16,16 +16,16 @@ def celery_init_app(app: Flask) -> Celery:
 
 def register_blueprints(app: Flask) -> None:
     from app.api.v1 import create_blueprint_v1
-    app.register_blueprint(create_blueprint_v1(), url_prefix='/v1')
+    app.register_blueprint(create_blueprint_v1(), url_prefix='/api/v1')
 
 
 def register_plugins(app: Flask) -> None:
-    from flask_sqlalchemy import SQLAlchemy
     from flask_migrate import Migrate
     from flask_cors import CORS
+    from flask_jwt_extended import JWTManager
+    from app.models.base import db
     
     # 初始化数据库
-    db = SQLAlchemy()
     db.init_app(app)
     
     # 初始化数据库迁移
@@ -33,6 +33,9 @@ def register_plugins(app: Flask) -> None:
     
     # 初始化CORS
     CORS(app)
+    
+    # 初始化JWT
+    JWTManager(app)
 
 
 def create_app() -> Flask:
@@ -49,7 +52,7 @@ def create_app() -> Flask:
         app.config.from_object('app.config.Developments')
     
     celery_init_app(app)
-    # register_plugins(app)
+    register_plugins(app)
     register_blueprints(app)
     return app
 

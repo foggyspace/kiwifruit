@@ -5,6 +5,7 @@ import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import { useDispatch } from "react-redux";
 import { setUserInfo } from "../../../store/modules/users";
 import "./LoginForm.less";
+import request from '../../../utils/request';
 
 interface LoginFormState {
     username: string;
@@ -21,36 +22,29 @@ const LoginFormComponent = () => {
     const onFinish = async (values: LoginFormState) => {
         try {
             setLoading(true);
-            const response = await fetch('/api/v1/users/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    username: values.username,
-                    password: values.password
-                })
+            const data = await request.post('/v1/users/login', {
+                username: values.username,
+                password: values.password
             });
-
-            if (!response.ok) {
-                throw new Error('登录失败');
-            }
-
-            const data = await response.json();
-            if (data.code === 0) {
-                dispatch(setUserInfo(data.data));
-                if (values.remember) {
-                    localStorage.setItem('username', values.username);
-                } else {
-                    localStorage.removeItem('username');
-                }
-                message.success("登录成功！");
-                navigate("/home");
+            console.log(data);
+            // 保存token到localStorage
+            localStorage.setItem('token', data.token);
+            
+            // 更新Redux中的用户信息
+            dispatch(setUserInfo(data));
+            
+            if (values.remember) {
+                localStorage.setItem('username', values.username);
             } else {
-                throw new Error(data.msg || '登录失败');
+                localStorage.removeItem('username');
             }
+            
+            message.success('登录成功！');
+            navigate('/home');
         } catch (error) {
-            message.error(error instanceof Error ? error.message : "登录失败，请检查用户名和密码！");
+            // 错误处理已在request拦截器中完成
+            console.log("error");
+            console.error('Login failed:', error);
         } finally {
             setLoading(false);
         }

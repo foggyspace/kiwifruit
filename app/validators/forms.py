@@ -36,7 +36,7 @@ class Form(WTForms):
 class LoginForm(Form):
     username = StringField('用户名/邮箱', validators=[
         DataRequired(message='用户名不能为空'),
-        Email(message='请输入有效的邮箱地址')
+        Regexp(r'^[\w\.-]+@[\w\.-]+\.\w+$|^[A-Za-z0-9_]+$', message='请输入有效的用户名或邮箱地址')
     ])
     password = PasswordField('密码', validators=[
         DataRequired(message='密码不能为空'),

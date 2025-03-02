@@ -46,11 +46,11 @@ def user_identity_loader_callback(identity):
             'scope': identity['scope']
     }
 
-def generate_access_token(user, scope, expires_delta=None):
+def generate_access_token(user_id, scope='user', expires_delta=None):
     if not expires_delta:
         expires_delta = timedelta(minutes=30)
     identity = {
-        'uuid': user.id,
+        'uuid': user_id,
         'scope': scope
     }
     access_token = create_access_token(identity=identity, expires_delta=expires_delta)
